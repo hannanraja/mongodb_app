@@ -28,5 +28,43 @@ router.post('/postdata', async (req, res) => {
     }
 })
 
+router.patch('/updatedata/:id', async (req, res) => {
+    let gymdata = new gymModel(req.body)
+    console.log(gymdata.name)
+    try {
+        const doc = await gymModel.findOne({_id : req.params.id });
+
+        const saveddata = await doc.overwrite(gymdata);
+        await doc.save();
+        res.send('Data updated for ' + gymdata.name)
+        
+    }
+    catch (err) {
+        res.status(500).send("error occured while connection : " + err)
+    }
+})
+
+
+router.delete('/deletedata/:id', async (req, res) => {
+    console.log(req.params.id)
+    try {
+        const saveddata = await gymModel.deleteOne({ _id: req.params.id })
+        res.send('Data deleted for id ' + req.params.id)
+    }
+    catch (err) {
+        res.status(500).send("error occured while connection : " + err)
+    }
+})
+
+
+router.delete('/deleteAll', async (req, res) => {
+    try {
+        const saveddata = await gymModel.remove({})
+        res.send('Database is clear : Deleted everything' )
+    }
+    catch (err) {
+        res.status(500).send("error occured while connection : " + err)
+    }
+})
 
 module.exports = router

@@ -7,5 +7,6 @@ const gymschema = new Schema({
     location: { type: String, required: [true,"Location is not required"]}
 })
 
-const gym = mongoose.model('gym',gymschema)
-module.exports = gym;
+const gymModel = mongoose.model('gym', gymschema)
+
+module.exports = gymModel;
